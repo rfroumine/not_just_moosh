@@ -18,7 +18,7 @@ export function EntryCard({ entry }: EntryCardProps) {
   };
 
   return (
-    <div className={`p-3 rounded-lg border ${colors.border} ${colors.bgLight}`}>
+    <div className={`p-3 rounded-xl ${colors.bgLight}`}>
       <div className="flex items-start justify-between gap-2">
         <div className="flex items-center gap-2">
           <span className="text-lg">{categoryInfo.icon}</span>
@@ -29,7 +29,7 @@ export function EntryCard({ entry }: EntryCardProps) {
         </div>
         <button
           onClick={handleDelete}
-          className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded transition-colors"
+          className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
           aria-label="Delete entry"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

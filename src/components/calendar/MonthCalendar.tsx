@@ -7,6 +7,7 @@ interface MonthCalendarProps {
   entries: CalendarEntryWithFood[];
   selectedDate: string | null;
   onSelectDate: (date: string) => void;
+  onDoubleClickDate: (date: string) => void;
   onPrevMonth: () => void;
   onNextMonth: () => void;
 }
@@ -16,6 +17,7 @@ export function MonthCalendar({
   entries,
   selectedDate,
   onSelectDate,
+  onDoubleClickDate,
   onPrevMonth,
   onNextMonth,
 }: MonthCalendarProps) {
@@ -148,7 +150,8 @@ export function MonthCalendar({
             <button
               key={index}
               onClick={() => onSelectDate(day.dateStr)}
-              className={`relative aspect-square p-1 flex flex-col items-center justify-start rounded-xl transition-all ${
+              onDoubleClick={() => onDoubleClickDate(day.dateStr)}
+              className={`relative aspect-[1/0.9] p-1 flex flex-col items-center justify-start rounded-xl transition-all ${
                 !day.isCurrentMonth ? 'text-gray-300' : 'text-gray-900'
               } ${
                 isSelected
@@ -157,7 +160,7 @@ export function MonthCalendar({
               }`}
             >
               <span
-                className={`w-7 h-7 flex items-center justify-center text-sm rounded-full ${
+                className={`w-6 h-6 flex items-center justify-center text-sm rounded-full ${
                   isToday
                     ? 'bg-indigo-600 text-white font-bold shadow-sm'
                     : isSelected
@@ -170,11 +173,11 @@ export function MonthCalendar({
 
               {/* Category dots */}
               {categoryDots.length > 0 && (
-                <div className="flex gap-1 mt-1">
+                <div className="flex gap-0.5 mt-0.5">
                   {categoryDots.map((cat, i) => (
                     <div
                       key={i}
-                      className={`w-2 h-2 rounded-full ${CATEGORY_COLORS[cat].dot}`}
+                      className={`w-1.5 h-1.5 rounded-full ${CATEGORY_COLORS[cat].dot}`}
                     />
                   ))}
                 </div>

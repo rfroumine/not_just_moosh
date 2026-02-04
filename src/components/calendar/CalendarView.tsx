@@ -1,15 +1,15 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useCalendarEntriesWithFoods } from '../../queries/useCalendarEntries';
 import { useUIStore } from '../../stores/uiStore';
 import { MonthCalendar } from './MonthCalendar';
-import { DatePopup } from './DatePopup';
+import { DayEntries } from './DayEntries';
 
 export function CalendarView() {
   const [currentMonth, setCurrentMonth] = useState(() => new Date());
   const { data: entries, isLoading, error } = useCalendarEntriesWithFoods();
-  const { selectedDate, setSelectedDate, calendarScrollPosition, setCalendarScrollPosition } = useUIStore();
+  const { selectedDate, setSelectedDate, calendarScrollPosition, setCalendarScrollPosition, openAddEntryModal } = useUIStore();
   const scrollRef = useRef<HTMLDivElement>(null);
-  const popupRef = useRef<HTMLDivElement>(null);
+  const entriesRef = useRef<HTMLDivElement>(null);
 
   // Restore scroll position
   useEffect(() => {
@@ -31,20 +31,6 @@ export function CalendarView() {
     return () => element.removeEventListener('scroll', handleScroll);
   }, [setCalendarScrollPosition]);
 
-  // Close popup on outside click
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (popupRef.current && !popupRef.current.contains(event.target as Node)) {
-        setSelectedDate(null);
-      }
-    };
-
-    if (selectedDate) {
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => document.removeEventListener('mousedown', handleClickOutside);
-    }
-  }, [selectedDate, setSelectedDate]);
-
   const handlePrevMonth = () => {
     setCurrentMonth((prev) => new Date(prev.getFullYear(), prev.getMonth() - 1, 1));
   };
@@ -53,13 +39,17 @@ export function CalendarView() {
     setCurrentMonth((prev) => new Date(prev.getFullYear(), prev.getMonth() + 1, 1));
   };
 
-  const handleSelectDate = (date: string) => {
+  const handleSelectDate = useCallback((date: string) => {
     if (selectedDate === date) {
       setSelectedDate(null);
     } else {
       setSelectedDate(date);
     }
-  };
+  }, [selectedDate, setSelectedDate]);
+
+  const handleDoubleClickDate = useCallback((date: string) => {
+    openAddEntryModal(date);
+  }, [openAddEntryModal]);
 
   if (error) {
     return (
@@ -95,23 +85,21 @@ export function CalendarView() {
   }
 
   return (
-    <div ref={scrollRef} className="pb-20">
+    <div ref={scrollRef} className="pb-20 space-y-3">
       <MonthCalendar
         currentMonth={currentMonth}
         entries={entries || []}
         selectedDate={selectedDate}
         onSelectDate={handleSelectDate}
+        onDoubleClickDate={handleDoubleClickDate}
         onPrevMonth={handlePrevMonth}
         onNextMonth={handleNextMonth}
       />
 
-      {/* Date popup */}
+      {/* Day entries panel */}
       {selectedDate && (
-        <div ref={popupRef}>
-          <DatePopup
-            date={selectedDate}
-            onClose={() => setSelectedDate(null)}
-          />
+        <div ref={entriesRef}>
+          <DayEntries date={selectedDate} />
         </div>
       )}
     </div>

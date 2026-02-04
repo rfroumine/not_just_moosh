@@ -92,18 +92,18 @@ export function AddEntryModal() {
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/50"
+        className="absolute inset-0 bg-black/40"
         onClick={closeAddEntryModal}
       />
 
       {/* Modal */}
-      <div className="relative bg-white w-full max-w-lg rounded-t-2xl sm:rounded-2xl max-h-[90vh] overflow-hidden flex flex-col">
+      <div className="relative bg-white w-full max-w-lg rounded-t-3xl sm:rounded-3xl max-h-[90vh] overflow-hidden flex flex-col shadow-xl">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b">
+        <div className="flex items-center justify-between px-5 pt-5 pb-3">
           <h2 className="text-lg font-semibold text-gray-900">Add Entry</h2>
           <button
             onClick={closeAddEntryModal}
-            className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-xl transition-colors"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -112,36 +112,36 @@ export function AddEntryModal() {
         </div>
 
         {/* Content */}
-        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-4 space-y-4">
+        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto px-5 pb-4 space-y-4">
           {/* Date */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Date</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Date</label>
             <input
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+              className="w-full px-4 py-2.5 bg-gray-50 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none transition-colors"
             />
           </div>
 
           {/* Food selection */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Food</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Food</label>
 
             {isAddingNew ? (
-              <div className="space-y-3 p-3 bg-gray-50 rounded-lg">
+              <div className="space-y-3 p-4 bg-gray-50 rounded-xl">
                 <input
                   type="text"
                   value={newFoodName}
                   onChange={(e) => setNewFoodName(e.target.value)}
                   placeholder="Food name"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+                  className="w-full px-4 py-2.5 bg-white rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
                   autoFocus
                 />
                 <select
                   value={newFoodCategory}
                   onChange={(e) => setNewFoodCategory(e.target.value as Category)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+                  className="w-full px-4 py-2.5 bg-white rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
                 >
                   {CATEGORY_ORDER.map((cat) => (
                     <option key={cat} value={cat}>
@@ -154,7 +154,7 @@ export function AddEntryModal() {
                     type="checkbox"
                     checked={newFoodIsAllergen}
                     onChange={(e) => setNewFoodIsAllergen(e.target.checked)}
-                    className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                    className="rounded-lg border-gray-300 text-indigo-600 focus:ring-indigo-500"
                   />
                   <span className="text-sm text-gray-700">This is an allergen</span>
                 </label>
@@ -162,7 +162,7 @@ export function AddEntryModal() {
                   <button
                     type="button"
                     onClick={() => setIsAddingNew(false)}
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                    className="flex-1 px-4 py-2.5 bg-white rounded-xl text-gray-700 hover:bg-gray-100 transition-colors"
                   >
                     Cancel
                   </button>
@@ -170,7 +170,7 @@ export function AddEntryModal() {
                     type="button"
                     onClick={handleAddNewFood}
                     disabled={!newFoodName.trim() || addFood.isPending}
-                    className="flex-1 px-3 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:bg-indigo-400 transition-colors"
+                    className="flex-1 px-4 py-2.5 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 disabled:bg-indigo-400 transition-colors"
                   >
                     {addFood.isPending ? 'Adding...' : 'Add Food'}
                   </button>
@@ -179,7 +179,7 @@ export function AddEntryModal() {
             ) : (
               <>
                 {selectedFood ? (
-                  <div className="flex items-center justify-between p-3 bg-indigo-50 border border-indigo-200 rounded-lg">
+                  <div className="flex items-center justify-between p-3.5 bg-indigo-50 rounded-xl">
                     <div className="flex items-center gap-2">
                       <span>{CATEGORIES[selectedFood.category as keyof typeof CATEGORIES].icon}</span>
                       <span className="font-medium text-indigo-900">{selectedFood.name}</span>
@@ -187,7 +187,7 @@ export function AddEntryModal() {
                     <button
                       type="button"
                       onClick={() => setSelectedFoodId('')}
-                      className="text-indigo-600 hover:text-indigo-800 text-sm"
+                      className="text-indigo-600 hover:text-indigo-800 text-sm font-medium"
                     >
                       Change
                     </button>
@@ -199,13 +199,13 @@ export function AddEntryModal() {
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       placeholder="Search foods..."
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+                      className="w-full px-4 py-2.5 bg-gray-50 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none transition-colors"
                     />
-                    <div className="mt-2 max-h-48 overflow-y-auto border border-gray-200 rounded-lg">
+                    <div className="mt-2 max-h-48 overflow-y-auto bg-gray-50 rounded-xl">
                       <button
                         type="button"
                         onClick={() => setIsAddingNew(true)}
-                        className="w-full flex items-center gap-2 px-3 py-2 text-indigo-600 hover:bg-indigo-50 transition-colors"
+                        className="w-full flex items-center gap-2 px-4 py-2.5 text-indigo-600 hover:bg-indigo-50 rounded-t-xl transition-colors"
                       >
                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -217,7 +217,7 @@ export function AddEntryModal() {
                           key={food.id}
                           type="button"
                           onClick={() => setSelectedFoodId(food.id)}
-                          className="w-full flex items-center gap-2 px-3 py-2 hover:bg-gray-50 transition-colors text-left"
+                          className="w-full flex items-center gap-2 px-4 py-2.5 hover:bg-gray-100 transition-colors text-left"
                         >
                           <span>{CATEGORIES[food.category as keyof typeof CATEGORIES].icon}</span>
                           <span className="text-gray-900">{food.name}</span>
@@ -232,11 +232,11 @@ export function AddEntryModal() {
 
           {/* Texture */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Texture</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Texture</label>
             <select
               value={texture}
               onChange={(e) => setTexture(e.target.value as Texture)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none capitalize"
+              className="w-full px-4 py-2.5 bg-gray-50 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none capitalize transition-colors"
             >
               {TEXTURES.map((t) => (
                 <option key={t} value={t} className="capitalize">
@@ -248,35 +248,35 @@ export function AddEntryModal() {
 
           {/* Notes */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Notes (optional)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Notes (optional)</label>
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="How did it go?"
               rows={2}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none resize-none"
+              className="w-full px-4 py-2.5 bg-gray-50 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none resize-none transition-colors"
             />
           </div>
 
           {/* Reaction */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Reaction (optional)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Reaction (optional)</label>
             <input
               type="text"
               value={reaction}
               onChange={(e) => setReaction(e.target.value)}
               placeholder="Any reactions observed?"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+              className="w-full px-4 py-2.5 bg-gray-50 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none transition-colors"
             />
           </div>
         </form>
 
         {/* Footer */}
-        <div className="p-4 border-t bg-gray-50">
+        <div className="px-5 pb-5 pt-3">
           <button
             onClick={handleSubmit}
             disabled={!selectedFoodId || addEntry.isPending}
-            className="w-full px-4 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 disabled:bg-indigo-400 disabled:cursor-not-allowed transition-colors"
+            className="w-full px-4 py-3.5 bg-indigo-600 text-white font-medium rounded-xl hover:bg-indigo-700 disabled:bg-indigo-400 disabled:cursor-not-allowed transition-colors"
           >
             {addEntry.isPending ? 'Adding...' : 'Add Entry'}
           </button>
