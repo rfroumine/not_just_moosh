@@ -41,12 +41,8 @@ export function SummaryBar({ compact = false }: SummaryBarProps) {
   if (compact) {
     return (
       <div>
-        <div className="text-xs text-gray-500 mb-1">
-          {summary.totalDone} of {summary.totalCount} foods
-          <span className="mx-1">•</span>
-          <span className="font-semibold text-indigo-600">{progressPercent}%</span>
-        </div>
-        <div className="flex flex-wrap gap-1.5">
+        {/* Category pills */}
+        <div className="flex flex-wrap gap-1.5 mb-2">
           {summary.categoryStats.map((stat) => {
             const colors = CATEGORY_COLORS[stat.category as Category];
             return (
@@ -59,6 +55,17 @@ export function SummaryBar({ compact = false }: SummaryBarProps) {
               </div>
             );
           })}
+        </div>
+        {/* Progress bar */}
+        <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden mb-1">
+          <div
+            className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 transition-all duration-500"
+            style={{ width: `${progressPercent}%` }}
+          />
+        </div>
+        {/* Stats text */}
+        <div className="text-xs text-gray-500">
+          {summary.totalDone} of {summary.totalCount} foods ({progressPercent}%)
         </div>
       </div>
     );

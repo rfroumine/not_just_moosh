@@ -52,7 +52,7 @@ export function AppShell() {
       <header className="bg-white border-b border-gray-200 sticky top-0 z-40">
         <div className="max-w-lg mx-auto px-4 py-3">
           {/* Title row */}
-          <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center justify-between mb-3">
             <h1
               className="text-2xl text-gray-900"
               style={{ fontFamily: 'Pacifico, cursive' }}
