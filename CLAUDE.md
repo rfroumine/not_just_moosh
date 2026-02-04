@@ -7,11 +7,37 @@
 - **Bug fixes:** `fix/description` (e.g., `fix/calendar-scroll`)
 
 ### Process
-1. Create a branch before starting work: `git checkout -b feature/your-feature-name`
+1. Create a branch: `git checkout -b feature/your-feature-name`
 2. Make changes and commit often
-3. Merge to main when complete
-4. Push to origin
-5. Deploy with `npx vercel --prod`
+3. Test locally on mobile (see Local Development below)
+4. Merge to main: `git checkout main && git merge feature/your-feature`
+5. Push to origin: `git push`
+6. Deploy with `npx vercel --prod`
+
+## Local Development
+
+### NPM Scripts
+- `npm run dev` - Start local dev server with hot-reload (for development)
+- `npm run build` - Build production files
+- `npm run preview` - Preview production build locally
+
+Note: `dev` is a script name (short for "development mode"), not a branch name.
+
+### Testing on Mobile
+To test features like swiping on your phone:
+
+1. Start dev server exposed to your network:
+   ```bash
+   npm run dev -- --host
+   ```
+
+2. Open the Network URL on your phone (e.g., `http://192.168.1.xxx:5173`)
+   - Must be on the same WiFi network
+
+3. **One-time OAuth setup** (for login to work on mobile):
+   - Google OAuth: Add `http://YOUR_LOCAL_IP:5173/auth/callback`
+   - Supabase: Add `http://YOUR_LOCAL_IP:5173/**` to redirect URLs
+   - Note: If your IP changes, update these URLs
 
 ## Tech Stack
 - React 18 + Vite + TypeScript
