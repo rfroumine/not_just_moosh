@@ -1,3 +1,4 @@
+import { useState, useRef, useEffect } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import { useAuth } from '../../hooks/useAuth';
 import { useUIStore } from '../../stores/uiStore';
@@ -12,6 +13,21 @@ import { ConfirmDelete } from '../modals/ConfirmDelete';
 export function AppShell() {
   const { profile, signOut } = useAuth();
   const { currentView, setCurrentView, isAddEntryModalOpen, isEditFoodModalOpen, deleteConfirmation } = useUIStore();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const babyInitial = profile?.baby_name?.charAt(0).toUpperCase() || '?';
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const swipeHandlers = useSwipeable({
     onSwipedLeft: () => {
@@ -35,19 +51,45 @@ export function AppShell() {
       {/* Header */}
       <header className="bg-white border-b border-gray-200 sticky top-0 z-40">
         <div className="max-w-lg mx-auto px-4 py-3">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-lg font-bold text-gray-900">
-                {profile?.baby_name}'s Food Journey
-              </h1>
-            </div>
-            <button
-              onClick={() => signOut()}
-              className="text-sm text-gray-500 hover:text-gray-700"
+          {/* Title row */}
+          <div className="flex items-center justify-between mb-2">
+            <h1
+              className="text-2xl text-gray-900"
+              style={{ fontFamily: 'Pacifico, cursive' }}
             >
-              Sign out
-            </button>
+              Not just Moosh
+            </h1>
+
+            {/* Baby avatar with dropdown */}
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white font-semibold text-sm shadow-sm hover:shadow-md transition-shadow"
+              >
+                {babyInitial}
+              </button>
+
+              {isDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-36 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
+                  <div className="px-3 py-2 border-b border-gray-100">
+                    <p className="text-sm font-medium text-gray-900">{profile?.baby_name}</p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      setIsDropdownOpen(false);
+                      signOut();
+                    }}
+                    className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                  >
+                    Sign out
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
+
+          {/* Compact summary */}
+          <SummaryBar compact />
         </div>
       </header>
 
@@ -56,11 +98,6 @@ export function AppShell() {
         {...swipeHandlers}
         className="max-w-lg mx-auto px-4 py-4 pb-20 swipe-container"
       >
-        {/* Summary */}
-        <div className="mb-4">
-          <SummaryBar />
-        </div>
-
         {/* View content */}
         <div className="relative">
           <div
