@@ -102,9 +102,9 @@ export function MonthCalendar({
   const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   return (
-    <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+    <div className="bg-white rounded-xl shadow-sm">
       {/* Month header */}
-      <div className="flex items-center justify-between p-4 border-b">
+      <div className="flex items-center justify-between p-4 pb-2">
         <button
           onClick={onPrevMonth}
           className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
@@ -129,7 +129,7 @@ export function MonthCalendar({
       </div>
 
       {/* Day names */}
-      <div className="grid grid-cols-7 border-b">
+      <div className="grid grid-cols-7 px-2 mb-1">
         {dayNames.map((day) => (
           <div key={day} className="py-2 text-center text-xs font-medium text-gray-500">
             {day}
@@ -138,7 +138,7 @@ export function MonthCalendar({
       </div>
 
       {/* Calendar grid */}
-      <div className="grid grid-cols-7">
+      <div className="grid grid-cols-7 gap-1 px-2 pb-3">
         {calendarDays.map((day, index) => {
           const isToday = day.date.getTime() === today.getTime();
           const isSelected = day.dateStr === selectedDate;
@@ -148,16 +148,20 @@ export function MonthCalendar({
             <button
               key={index}
               onClick={() => onSelectDate(day.dateStr)}
-              className={`relative aspect-square p-1 flex flex-col items-center justify-start border-b border-r transition-colors ${
+              className={`relative aspect-square p-1 flex flex-col items-center justify-start rounded-xl transition-all ${
                 !day.isCurrentMonth ? 'text-gray-300' : 'text-gray-900'
-              } ${isSelected ? 'bg-indigo-50' : 'hover:bg-gray-50'}`}
+              } ${
+                isSelected
+                  ? 'bg-indigo-50 ring-1 ring-indigo-200'
+                  : 'hover:bg-gray-50'
+              }`}
             >
               <span
                 className={`w-7 h-7 flex items-center justify-center text-sm rounded-full ${
                   isToday
-                    ? 'bg-indigo-600 text-white font-bold'
+                    ? 'bg-indigo-600 text-white font-bold shadow-sm'
                     : isSelected
-                    ? 'bg-indigo-100 text-indigo-700 font-medium'
+                    ? 'text-indigo-700 font-medium'
                     : ''
                 }`}
               >
@@ -166,11 +170,11 @@ export function MonthCalendar({
 
               {/* Category dots */}
               {categoryDots.length > 0 && (
-                <div className="flex gap-0.5 mt-1">
+                <div className="flex gap-1 mt-1">
                   {categoryDots.map((cat, i) => (
                     <div
                       key={i}
-                      className={`w-1.5 h-1.5 rounded-full ${CATEGORY_COLORS[cat].dot}`}
+                      className={`w-2 h-2 rounded-full ${CATEGORY_COLORS[cat].dot}`}
                     />
                   ))}
                 </div>
