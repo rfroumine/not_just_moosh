@@ -1,7 +1,7 @@
 import { useSwipeable } from 'react-swipeable';
 import { useAuth } from '../../hooks/useAuth';
 import { useUIStore } from '../../stores/uiStore';
-import { ViewToggle } from './ViewToggle';
+import { BottomNav } from './BottomNav';
 import { SummaryBar } from './SummaryBar';
 import { ChecklistView } from '../checklist/ChecklistView';
 import { CalendarView } from '../calendar/CalendarView';
@@ -15,13 +15,13 @@ export function AppShell() {
 
   const swipeHandlers = useSwipeable({
     onSwipedLeft: () => {
-      if (currentView === 'checklist') {
-        setCurrentView('calendar');
+      if (currentView === 'calendar') {
+        setCurrentView('checklist');
       }
     },
     onSwipedRight: () => {
-      if (currentView === 'calendar') {
-        setCurrentView('checklist');
+      if (currentView === 'checklist') {
+        setCurrentView('calendar');
       }
     },
     trackMouse: false,
@@ -35,7 +35,7 @@ export function AppShell() {
       {/* Header */}
       <header className="bg-white border-b border-gray-200 sticky top-0 z-40">
         <div className="max-w-lg mx-auto px-4 py-3">
-          <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center justify-between">
             <div>
               <h1 className="text-lg font-bold text-gray-900">
                 {profile?.baby_name}'s Food Journey
@@ -48,14 +48,13 @@ export function AppShell() {
               Sign out
             </button>
           </div>
-          <ViewToggle />
         </div>
       </header>
 
       {/* Main content */}
       <main
         {...swipeHandlers}
-        className="max-w-lg mx-auto px-4 py-4 swipe-container"
+        className="max-w-lg mx-auto px-4 py-4 pb-20 swipe-container"
       >
         {/* Summary */}
         <div className="mb-4">
@@ -80,6 +79,9 @@ export function AppShell() {
           </div>
         </div>
       </main>
+
+      {/* Bottom navigation */}
+      <BottomNav />
 
       {/* Modals */}
       {isAddEntryModalOpen && <AddEntryModal />}

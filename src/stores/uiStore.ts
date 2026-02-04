@@ -45,7 +45,7 @@ export const useUIStore = create<UIState>()(
   persist(
     (set) => ({
       // View
-      currentView: 'checklist',
+      currentView: 'calendar',
       setCurrentView: (view) => set({ currentView: view }),
 
       // Scroll positions

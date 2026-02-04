@@ -1,3 +1,3 @@
 export { AppShell } from './AppShell';
-export { ViewToggle } from './ViewToggle';
+export { BottomNav } from './BottomNav';
 export { SummaryBar } from './SummaryBar';
