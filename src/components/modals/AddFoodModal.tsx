@@ -192,6 +192,7 @@ export function AddFoodModal() {
         {/* Footer */}
         <div className="px-5 pb-5 pt-3">
           <button
+            type="button"
             onClick={handleSubmit}
             disabled={!name.trim() || isDuplicate || addFood.isPending}
             className="w-full px-4 py-3.5 bg-indigo-600 text-white font-medium rounded-xl hover:bg-indigo-700 disabled:bg-indigo-400 disabled:cursor-not-allowed transition-colors"

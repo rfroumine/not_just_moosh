@@ -10,6 +10,20 @@ import { getFoodEmoji } from '../../lib/constants';
 import { getLocalDateString } from '../../lib/dateUtils';
 import type { Texture, Category } from '../../lib/types';
 
+// Common food emojis for picker
+const EMOJI_OPTIONS = [
+  '🥕', '🍎', '🥦', '🍌', '🥚', '🧀', '🍗', '🥛', '🍞', '🥜',
+  '🫘', '🥒', '🍠', '🥬', '🥭', '🍇', '🍓', '🥝', '🍑', '🍐',
+  '🌽', '🥑', '🫑', '🧆', '🥩', '🍣', '🦐', '🐟', '🌾', '🥣',
+  '🍝', '🥞', '🧈', '🥥', '🫒', '🍈', '🍉', '🎃', '🦃', '🍖',
+];
+
+const capitalizeName = (name: string): string => {
+  return name.trim().split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+};
+
 export function AddEntryModal() {
   const { user } = useAuth();
   const { addEntryModalDate, addEntryModalFoodId, closeAddEntryModal } = useUIStore();
@@ -28,6 +42,8 @@ export function AddEntryModal() {
   const [newFoodName, setNewFoodName] = useState('');
   const [newFoodCategory, setNewFoodCategory] = useState<Category>('other');
   const [newFoodIsAllergen, setNewFoodIsAllergen] = useState(false);
+  const [newFoodEmoji, setNewFoodEmoji] = useState('');
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   // Filter foods by search query
   const filteredFoods = useMemo(() => {
@@ -73,20 +89,27 @@ export function AddEntryModal() {
     try {
       const newFood = await addFood.mutateAsync({
         form: {
-          name: newFoodName.trim(),
+          name: capitalizeName(newFoodName),
           category: newFoodCategory,
           is_allergen: newFoodIsAllergen,
+          emoji: newFoodEmoji || undefined,
         },
         userId: user.id,
       });
       setSelectedFoodId(newFood.id);
       setIsAddingNew(false);
       setNewFoodName('');
+      setNewFoodEmoji('');
+      setShowEmojiPicker(false);
       setSearchQuery('');
     } catch (error) {
       console.error('Failed to add food:', error);
     }
   };
+
+  // Get the default emoji for current category
+  const defaultNewFoodEmoji = CATEGORIES[newFoodCategory].icon;
+  const displayNewFoodEmoji = newFoodEmoji || defaultNewFoodEmoji;
 
   const selectedFood = foods?.find((f) => f.id === selectedFoodId);
 
@@ -132,17 +155,65 @@ export function AddEntryModal() {
 
             {isAddingNew ? (
               <div className="space-y-3 p-4 bg-gray-50 rounded-xl">
-                <input
-                  type="text"
-                  value={newFoodName}
-                  onChange={(e) => setNewFoodName(e.target.value)}
-                  placeholder="Food name"
-                  className="w-full px-4 py-2.5 bg-white rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
-                  autoFocus
-                />
+                {/* Food name with emoji picker */}
+                <div className="flex gap-2">
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                      className="w-11 h-11 bg-white rounded-xl flex items-center justify-center text-xl hover:bg-gray-100 transition-colors border border-gray-200"
+                    >
+                      {displayNewFoodEmoji}
+                    </button>
+                    {showEmojiPicker && (
+                      <div className="absolute top-full left-0 mt-1 z-20 bg-white rounded-xl shadow-lg border border-gray-200 p-2 w-64">
+                        <div className="grid grid-cols-8 gap-1">
+                          {EMOJI_OPTIONS.map((e) => (
+                            <button
+                              key={e}
+                              type="button"
+                              onClick={() => {
+                                setNewFoodEmoji(e);
+                                setShowEmojiPicker(false);
+                              }}
+                              className={`w-7 h-7 flex items-center justify-center rounded hover:bg-gray-100 ${
+                                displayNewFoodEmoji === e ? 'bg-indigo-100' : ''
+                              }`}
+                            >
+                              {e}
+                            </button>
+                          ))}
+                        </div>
+                        {newFoodEmoji && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setNewFoodEmoji('');
+                              setShowEmojiPicker(false);
+                            }}
+                            className="w-full mt-2 text-xs text-gray-500 hover:text-gray-700"
+                          >
+                            Reset to default
+                          </button>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                  <input
+                    type="text"
+                    value={newFoodName}
+                    onChange={(e) => setNewFoodName(e.target.value)}
+                    placeholder="Food name"
+                    className="flex-1 px-4 py-2.5 bg-white rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
+                    autoFocus
+                  />
+                </div>
                 <select
                   value={newFoodCategory}
-                  onChange={(e) => setNewFoodCategory(e.target.value as Category)}
+                  onChange={(e) => {
+                    setNewFoodCategory(e.target.value as Category);
+                    if (!newFoodEmoji) setNewFoodEmoji('');
+                  }}
                   className="w-full px-4 py-2.5 bg-white rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
                 >
                   {CATEGORY_ORDER.map((cat) => (
@@ -163,7 +234,11 @@ export function AddEntryModal() {
                 <div className="flex gap-2">
                   <button
                     type="button"
-                    onClick={() => setIsAddingNew(false)}
+                    onClick={() => {
+                      setIsAddingNew(false);
+                      setNewFoodEmoji('');
+                      setShowEmojiPicker(false);
+                    }}
                     className="flex-1 px-4 py-2.5 bg-white rounded-xl text-gray-700 hover:bg-gray-100 transition-colors"
                   >
                     Cancel
