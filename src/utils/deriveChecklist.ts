@@ -9,6 +9,7 @@ import type {
 } from '../lib/types';
 import { CATEGORY_ORDER, CATEGORIES } from '../lib/types';
 import { ALLERGEN_REMINDER_DAYS, ALLERGEN_DONE_THRESHOLD } from '../lib/constants';
+import { getLocalDateString } from '../lib/dateUtils';
 
 /**
  * Calculate days since a given date
@@ -26,7 +27,7 @@ export function daysSince(dateStr: string): number {
  * Get today's date as YYYY-MM-DD string
  */
 export function getTodayString(): string {
-  return new Date().toISOString().split('T')[0];
+  return getLocalDateString(new Date());
 }
 
 /**

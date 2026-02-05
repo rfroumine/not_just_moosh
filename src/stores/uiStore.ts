@@ -1,7 +1,14 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { getLocalDateString } from '../lib/dateUtils';
 
 type View = 'checklist' | 'calendar';
+
+interface ToastState {
+  isOpen: boolean;
+  message: string;
+  type: 'error' | 'success' | 'info';
+}
 
 interface UIState {
   // Current view
@@ -30,6 +37,20 @@ interface UIState {
   openEditFoodModal: (foodId: string) => void;
   closeEditFoodModal: () => void;
 
+  isEditEntryModalOpen: boolean;
+  editEntryId: string | null;
+  openEditEntryModal: (entryId: string) => void;
+  closeEditEntryModal: () => void;
+
+  isAddFoodModalOpen: boolean;
+  openAddFoodModal: () => void;
+  closeAddFoodModal: () => void;
+
+  // Toast notifications
+  toast: ToastState;
+  showToast: (message: string, type?: 'error' | 'success' | 'info') => void;
+  hideToast: () => void;
+
   // Confirm delete
   deleteConfirmation: {
     isOpen: boolean;
@@ -55,7 +76,7 @@ export const useUIStore = create<UIState>()(
       setCalendarScrollPosition: (position) => set({ calendarScrollPosition: position }),
 
       // Selected date
-      selectedDate: null,
+      selectedDate: getLocalDateString(new Date()),
       setSelectedDate: (date) => set({ selectedDate: date }),
 
       // Add entry modal
@@ -64,7 +85,7 @@ export const useUIStore = create<UIState>()(
       addEntryModalFoodId: null,
       openAddEntryModal: (date, foodId) => set({
         isAddEntryModalOpen: true,
-        addEntryModalDate: date || new Date().toISOString().split('T')[0],
+        addEntryModalDate: date || getLocalDateString(new Date()),
         addEntryModalFoodId: foodId || null,
       }),
       closeAddEntryModal: () => set({
@@ -83,6 +104,36 @@ export const useUIStore = create<UIState>()(
       closeEditFoodModal: () => set({
         isEditFoodModalOpen: false,
         editFoodId: null,
+      }),
+
+      // Edit entry modal
+      isEditEntryModalOpen: false,
+      editEntryId: null,
+      openEditEntryModal: (entryId) => set({
+        isEditEntryModalOpen: true,
+        editEntryId: entryId,
+      }),
+      closeEditEntryModal: () => set({
+        isEditEntryModalOpen: false,
+        editEntryId: null,
+      }),
+
+      // Add food modal
+      isAddFoodModalOpen: false,
+      openAddFoodModal: () => set({ isAddFoodModalOpen: true }),
+      closeAddFoodModal: () => set({ isAddFoodModalOpen: false }),
+
+      // Toast notifications
+      toast: {
+        isOpen: false,
+        message: '',
+        type: 'info',
+      },
+      showToast: (message, type = 'info') => set({
+        toast: { isOpen: true, message, type },
+      }),
+      hideToast: () => set({
+        toast: { isOpen: false, message: '', type: 'info' },
       }),
 
       // Delete confirmation

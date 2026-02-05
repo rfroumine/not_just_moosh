@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import type { CalendarEntryWithFood, Category } from '../../lib/types';
 import { CATEGORY_COLORS } from '../../lib/constants';
+import { getLocalDateString } from '../../lib/dateUtils';
 
 interface MonthCalendarProps {
   currentMonth: Date;
@@ -45,7 +46,7 @@ export function MonthCalendar({
       days.push({
         date,
         isCurrentMonth: false,
-        dateStr: date.toISOString().split('T')[0],
+        dateStr: getLocalDateString(date),
       });
     }
 
@@ -55,7 +56,7 @@ export function MonthCalendar({
       days.push({
         date,
         isCurrentMonth: true,
-        dateStr: date.toISOString().split('T')[0],
+        dateStr: getLocalDateString(date),
       });
     }
 
@@ -66,7 +67,7 @@ export function MonthCalendar({
       days.push({
         date,
         isCurrentMonth: false,
-        dateStr: date.toISOString().split('T')[0],
+        dateStr: getLocalDateString(date),
       });
     }
 

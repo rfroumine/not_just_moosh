@@ -6,6 +6,8 @@ import { useAddCalendarEntry } from '../../queries/useCalendarEntries';
 import { useQueryClient } from '@tanstack/react-query';
 import { CHECKLIST_QUERY_KEY } from '../../queries/useChecklist';
 import { TEXTURES, CATEGORIES, CATEGORY_ORDER } from '../../lib/types';
+import { getFoodEmoji } from '../../lib/constants';
+import { getLocalDateString } from '../../lib/dateUtils';
 import type { Texture, Category } from '../../lib/types';
 
 export function AddEntryModal() {
@@ -17,7 +19,7 @@ export function AddEntryModal() {
   const queryClient = useQueryClient();
 
   const [selectedFoodId, setSelectedFoodId] = useState(addEntryModalFoodId || '');
-  const [date, setDate] = useState(addEntryModalDate || new Date().toISOString().split('T')[0]);
+  const [date, setDate] = useState(addEntryModalDate || getLocalDateString(new Date()));
   const [texture, setTexture] = useState<Texture>('puree');
   const [notes, setNotes] = useState('');
   const [reaction, setReaction] = useState('');
@@ -181,7 +183,7 @@ export function AddEntryModal() {
                 {selectedFood ? (
                   <div className="flex items-center justify-between p-3.5 bg-indigo-50 rounded-xl">
                     <div className="flex items-center gap-2">
-                      <span>{CATEGORIES[selectedFood.category as keyof typeof CATEGORIES].icon}</span>
+                      <span>{getFoodEmoji(selectedFood.name, CATEGORIES[selectedFood.category as keyof typeof CATEGORIES].icon)}</span>
                       <span className="font-medium text-indigo-900">{selectedFood.name}</span>
                     </div>
                     <button
@@ -219,7 +221,7 @@ export function AddEntryModal() {
                           onClick={() => setSelectedFoodId(food.id)}
                           className="w-full flex items-center gap-2 px-4 py-2.5 hover:bg-gray-100 transition-colors text-left"
                         >
-                          <span>{CATEGORIES[food.category as keyof typeof CATEGORIES].icon}</span>
+                          <span>{getFoodEmoji(food.name, CATEGORIES[food.category as keyof typeof CATEGORIES].icon)}</span>
                           <span className="text-gray-900">{food.name}</span>
                         </button>
                       ))}
