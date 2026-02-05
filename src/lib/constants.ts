@@ -117,11 +117,11 @@ export const CATEGORY_COLORS: Record<Category, {
     dot: 'bg-pink-400',
   },
   dairy: {
-    bg: 'bg-yellow-500',
-    bgLight: 'bg-yellow-50',
-    text: 'text-yellow-700',
-    border: 'border-yellow-200',
-    dot: 'bg-yellow-400',
+    bg: 'bg-blue-500',
+    bgLight: 'bg-blue-50',
+    text: 'text-blue-700',
+    border: 'border-blue-200',
+    dot: 'bg-blue-400',
   },
   grains: {
     bg: 'bg-amber-500',
