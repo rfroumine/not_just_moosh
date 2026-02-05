@@ -28,12 +28,15 @@ export function LoginPage() {
     <div className="min-h-screen bg-gradient-to-b from-indigo-50 to-white flex flex-col items-center justify-center p-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <div className="text-6xl mb-4">🍼</div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Not Just Moosh
+          <div className="text-6xl mb-4">🥕</div>
+          <h1
+            className="text-3xl text-gray-900 mb-2"
+            style={{ fontFamily: 'Pacifico, cursive' }}
+          >
+            Not just Moosh
           </h1>
           <p className="text-gray-600">
-            Track your baby's food journey
+            Track and plan your little moosh's starting solids journey
           </p>
         </div>
 
