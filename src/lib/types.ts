@@ -13,6 +13,7 @@ export interface Food {
   category: Category;
   is_allergen: boolean;
   is_default: boolean;
+  emoji?: string;
   created_at: string;
   deleted_at: string | null;
 }
@@ -32,6 +33,7 @@ export interface ManualMark {
   id: string;
   user_id: string;
   food_id: string;
+  is_auto_complete?: boolean;
   created_at: string;
 }
 
@@ -49,7 +51,7 @@ export type Texture = typeof TEXTURES[number];
 
 export const CATEGORIES = {
   allergens: { icon: '⚠️', color: 'red', label: 'Allergens' },
-  vegetables: { icon: '🥕', color: 'green', label: 'Vegetables' },
+  vegetables: { icon: '🥗', color: 'green', label: 'Vegetables' },
   fruit: { icon: '🍎', color: 'pink', label: 'Fruit' },
   dairy: { icon: '🧀', color: 'yellow', label: 'Dairy' },
   grains: { icon: '🌾', color: 'amber', label: 'Grains' },
@@ -104,6 +106,7 @@ export interface AddFoodForm {
   name: string;
   category: Category;
   is_allergen: boolean;
+  emoji?: string;
 }
 
 // Calendar types

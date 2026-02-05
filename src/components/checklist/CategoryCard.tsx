@@ -74,7 +74,7 @@ export function CategoryCard({ group }: CategoryCardProps) {
 
       {/* Food list */}
       {isExpanded && (
-        <div className="p-3 space-y-2">
+        <div className={`p-3 space-y-2 ${colors.bgLight}`}>
           {group.foods.map((food) => (
             <FoodCard key={food.id} food={food} />
           ))}

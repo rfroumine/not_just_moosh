@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS foods (
   category TEXT NOT NULL,
   is_allergen BOOLEAN DEFAULT false,
   is_default BOOLEAN DEFAULT false,
+  emoji TEXT,
   created_at TIMESTAMPTZ DEFAULT now(),
   deleted_at TIMESTAMPTZ
 );
@@ -37,6 +38,7 @@ CREATE TABLE IF NOT EXISTS manual_marks (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
   food_id UUID NOT NULL REFERENCES foods(id) ON DELETE CASCADE,
+  is_auto_complete BOOLEAN DEFAULT false,
   created_at TIMESTAMPTZ DEFAULT now()
 );
 
@@ -132,3 +134,13 @@ DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE FUNCTION handle_new_user();
+
+-- =============================================================================
+-- MIGRATIONS (run these on existing databases)
+-- =============================================================================
+
+-- Migration: Add emoji column to foods table (Feb 2026)
+-- ALTER TABLE foods ADD COLUMN IF NOT EXISTS emoji TEXT;
+
+-- Migration: Add is_auto_complete column to manual_marks table (Feb 2026)
+-- ALTER TABLE manual_marks ADD COLUMN IF NOT EXISTS is_auto_complete BOOLEAN DEFAULT false;

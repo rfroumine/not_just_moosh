@@ -60,6 +60,25 @@ export function useEntriesByDate(date: string | null) {
   });
 }
 
+export function useEntriesByFoodId(foodId: string | null) {
+  return useQuery({
+    queryKey: [...CALENDAR_ENTRIES_QUERY_KEY, 'by_food', foodId],
+    queryFn: async (): Promise<CalendarEntry[]> => {
+      if (!foodId) return [];
+
+      const { data, error } = await supabase
+        .from('calendar_entries')
+        .select('*')
+        .eq('food_id', foodId)
+        .order('date', { ascending: false });
+
+      if (error) throw error;
+      return data as CalendarEntry[];
+    },
+    enabled: !!foodId,
+  });
+}
+
 export function useAddCalendarEntry() {
   const queryClient = useQueryClient();
 
@@ -96,7 +115,7 @@ export function useUpdateCalendarEntry() {
       updates,
     }: {
       entryId: string;
-      updates: { texture?: Texture; notes?: string | null; reaction?: string | null };
+      updates: { date?: string; texture?: Texture; notes?: string | null; reaction?: string | null };
     }) => {
       const { data, error } = await supabase
         .from('calendar_entries')

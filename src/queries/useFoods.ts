@@ -34,6 +34,7 @@ export function useAddFood() {
           category: form.category,
           is_allergen: form.is_allergen,
           is_default: false,
+          emoji: form.emoji || null,
         })
         .select()
         .single();
@@ -56,7 +57,7 @@ export function useUpdateFood() {
       updates,
     }: {
       foodId: string;
-      updates: { name?: string; category?: Category; is_allergen?: boolean };
+      updates: { name?: string; category?: Category; is_allergen?: boolean; emoji?: string };
     }) => {
       const { data, error } = await supabase
         .from('foods')

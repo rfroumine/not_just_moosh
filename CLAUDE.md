@@ -23,6 +23,22 @@
 
 Note: `dev` is a script name (short for "development mode"), not a branch name.
 
+### Ensuring Port 5173 is Available
+Before starting the dev server, kill any processes using port 5173 to keep OAuth working:
+
+```bash
+# Find process using port 5173
+netstat -ano | findstr :5173
+
+# Kill the process (replace <pid> with actual number from above)
+# In CMD:
+taskkill /PID <pid> /F
+# In Git Bash:
+taskkill //PID <pid> //F
+```
+
+Then run `npm run dev` - it should start on port 5173.
+
 ### Testing on Mobile
 To test features like swiping on your phone:
 

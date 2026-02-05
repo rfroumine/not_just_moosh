@@ -3,16 +3,18 @@ import { useSwipeable } from 'react-swipeable';
 import { useAuth } from '../../hooks/useAuth';
 import { useUIStore } from '../../stores/uiStore';
 import { BottomNav } from './BottomNav';
-import { SummaryBar } from './SummaryBar';
 import { ChecklistView } from '../checklist/ChecklistView';
 import { CalendarView } from '../calendar/CalendarView';
 import { AddEntryModal } from '../modals/AddEntryModal';
+import { AddFoodModal } from '../modals/AddFoodModal';
 import { EditFoodModal } from '../modals/EditFoodModal';
+import { EditEntryModal } from '../modals/EditEntryModal';
 import { ConfirmDelete } from '../modals/ConfirmDelete';
+import { Toast } from '../Toast';
 
 export function AppShell() {
   const { profile, signOut } = useAuth();
-  const { currentView, setCurrentView, isAddEntryModalOpen, isEditFoodModalOpen, deleteConfirmation } = useUIStore();
+  const { currentView, setCurrentView, isAddEntryModalOpen, isAddFoodModalOpen, isEditFoodModalOpen, isEditEntryModalOpen, deleteConfirmation } = useUIStore();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -50,46 +52,40 @@ export function AppShell() {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white border-b border-gray-200 sticky top-0 z-40">
-        <div className="max-w-lg mx-auto px-4 py-3">
-          {/* Title row */}
-          <div className="flex items-center justify-between mb-3">
-            <h1
-              className="text-2xl text-gray-900"
-              style={{ fontFamily: 'Pacifico, cursive' }}
+        <div className="max-w-lg mx-auto px-4 py-2 flex items-center justify-center">
+          <h1
+            className="text-3xl text-gray-900"
+            style={{ fontFamily: 'Pacifico, cursive' }}
+          >
+            Not just Moosh
+          </h1>
+
+          {/* Baby avatar with dropdown - positioned absolute to maintain centering */}
+          <div className="absolute right-4" ref={dropdownRef}>
+            <button
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white font-semibold text-sm shadow-sm hover:shadow-md transition-shadow"
             >
-              Not just Moosh
-            </h1>
+              {babyInitial}
+            </button>
 
-            {/* Baby avatar with dropdown */}
-            <div className="relative" ref={dropdownRef}>
-              <button
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white font-semibold text-sm shadow-sm hover:shadow-md transition-shadow"
-              >
-                {babyInitial}
-              </button>
-
-              {isDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-36 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
-                  <div className="px-3 py-2 border-b border-gray-100">
-                    <p className="text-sm font-medium text-gray-900">{profile?.baby_name}</p>
-                  </div>
-                  <button
-                    onClick={() => {
-                      setIsDropdownOpen(false);
-                      signOut();
-                    }}
-                    className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                  >
-                    Sign out
-                  </button>
+            {isDropdownOpen && (
+              <div className="absolute right-0 mt-2 w-36 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
+                <div className="px-3 py-2 border-b border-gray-100">
+                  <p className="text-sm font-medium text-gray-900">{profile?.baby_name}</p>
                 </div>
-              )}
-            </div>
+                <button
+                  onClick={() => {
+                    setIsDropdownOpen(false);
+                    signOut();
+                  }}
+                  className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                >
+                  Sign out
+                </button>
+              </div>
+            )}
           </div>
-
-          {/* Compact summary */}
-          <SummaryBar compact />
         </div>
       </header>
 
@@ -135,8 +131,13 @@ export function AppShell() {
 
       {/* Modals */}
       {isAddEntryModalOpen && <AddEntryModal />}
+      {isAddFoodModalOpen && <AddFoodModal />}
       {isEditFoodModalOpen && <EditFoodModal />}
+      {isEditEntryModalOpen && <EditEntryModal />}
       {deleteConfirmation.isOpen && <ConfirmDelete />}
+
+      {/* Toast notifications */}
+      <Toast />
     </div>
   );
 }
