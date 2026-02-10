@@ -10,11 +10,13 @@ import { AddFoodModal } from '../modals/AddFoodModal';
 import { EditFoodModal } from '../modals/EditFoodModal';
 import { EditEntryModal } from '../modals/EditEntryModal';
 import { ConfirmDelete } from '../modals/ConfirmDelete';
+import { VoiceInputButton } from '../voice/VoiceInputButton';
+import { VoiceConfirmModal } from '../voice/VoiceConfirmModal';
 import { Toast } from '../Toast';
 
 export function AppShell() {
   const { profile, signOut } = useAuth();
-  const { currentView, setCurrentView, isAddEntryModalOpen, isAddFoodModalOpen, isEditFoodModalOpen, isEditEntryModalOpen, deleteConfirmation } = useUIStore();
+  const { currentView, setCurrentView, isAddEntryModalOpen, isAddFoodModalOpen, isEditFoodModalOpen, isEditEntryModalOpen, isVoiceConfirmModalOpen, deleteConfirmation } = useUIStore();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -116,17 +118,22 @@ export function AppShell() {
         </div>
       </main>
 
-      {/* Floating add button - calendar view only */}
+      {/* Floating buttons - calendar view only */}
       {currentView === 'calendar' && (
-        <button
-          onClick={() => useUIStore.getState().openAddEntryModal()}
-          className="fixed bottom-20 right-4 w-14 h-14 bg-indigo-600 text-white rounded-full shadow-lg hover:bg-indigo-700 hover:shadow-xl transition-all flex items-center justify-center z-30"
-          aria-label="Add entry"
-        >
-          <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-          </svg>
-        </button>
+        <div className="fixed bottom-20 right-4 flex flex-col gap-3 z-30">
+          {/* Voice input button */}
+          <VoiceInputButton />
+          {/* Add entry button */}
+          <button
+            onClick={() => useUIStore.getState().openAddEntryModal()}
+            className="w-14 h-14 bg-indigo-600 text-white rounded-full shadow-lg hover:bg-indigo-700 hover:shadow-xl transition-all flex items-center justify-center"
+            aria-label="Add entry"
+          >
+            <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
+          </button>
+        </div>
       )}
 
       {/* Bottom navigation */}
@@ -137,6 +144,7 @@ export function AppShell() {
       {isAddFoodModalOpen && <AddFoodModal />}
       {isEditFoodModalOpen && <EditFoodModal />}
       {isEditEntryModalOpen && <EditEntryModal />}
+      {isVoiceConfirmModalOpen && <VoiceConfirmModal />}
       {deleteConfirmation.isOpen && <ConfirmDelete />}
 
       {/* Toast notifications */}

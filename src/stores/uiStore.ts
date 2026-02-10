@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { getLocalDateString } from '../lib/dateUtils';
+import type { ParsedVoiceEntry } from '../utils/parseVoiceEntry';
 
 type View = 'checklist' | 'calendar';
 
@@ -45,6 +46,12 @@ interface UIState {
   isAddFoodModalOpen: boolean;
   openAddFoodModal: () => void;
   closeAddFoodModal: () => void;
+
+  // Voice confirm modal
+  isVoiceConfirmModalOpen: boolean;
+  voiceParsedEntry: ParsedVoiceEntry | null;
+  openVoiceConfirmModal: (entry: ParsedVoiceEntry) => void;
+  closeVoiceConfirmModal: () => void;
 
   // Toast notifications
   toast: ToastState;
@@ -122,6 +129,18 @@ export const useUIStore = create<UIState>()(
       isAddFoodModalOpen: false,
       openAddFoodModal: () => set({ isAddFoodModalOpen: true }),
       closeAddFoodModal: () => set({ isAddFoodModalOpen: false }),
+
+      // Voice confirm modal
+      isVoiceConfirmModalOpen: false,
+      voiceParsedEntry: null,
+      openVoiceConfirmModal: (entry) => set({
+        isVoiceConfirmModalOpen: true,
+        voiceParsedEntry: entry,
+      }),
+      closeVoiceConfirmModal: () => set({
+        isVoiceConfirmModalOpen: false,
+        voiceParsedEntry: null,
+      }),
 
       // Toast notifications
       toast: {
