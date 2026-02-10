@@ -1,5 +1,4 @@
 import type { Food, Texture } from '../lib/types';
-import { TEXTURES } from '../lib/types';
 import { getLocalDateString } from '../lib/dateUtils';
 
 export interface ParsedVoiceEntry {
