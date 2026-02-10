@@ -13,7 +13,7 @@ export default defineConfig({
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
       manifest: {
         name: 'Not Just Moosh',
-        short_name: 'Moosh',
+        short_name: 'Not Just Moosh',
         description: 'Baby food introduction tracker',
         theme_color: '#4f46e5',
         background_color: '#ffffff',
