@@ -136,11 +136,17 @@ export function FoodCard({ food }: FoodCardProps) {
     >
       {/* Tick/Untick button - LEFT side */}
       <button
-        onClick={isTicked ? handleUntick : handleTick}
+        onClick={
+          food.is_allergen
+            ? timesGiven >= ALLERGEN_DONE_THRESHOLD ? handleUntick : handleTick
+            : isTicked ? handleUntick : handleTick
+        }
         disabled={isPending}
         className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${
           isTicked
-            ? 'bg-green-500 text-white hover:bg-green-600'
+            ? food.is_allergen && timesGiven < ALLERGEN_DONE_THRESHOLD
+              ? 'bg-amber-500 text-white hover:bg-amber-600'
+              : 'bg-green-500 text-white hover:bg-green-600'
             : 'border-2 border-gray-300 text-gray-300 hover:border-gray-400 hover:text-gray-400'
         }`}
         title={isTicked ? 'Untick' : 'Mark as given'}
