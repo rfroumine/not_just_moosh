@@ -67,6 +67,12 @@ interface UIState {
   };
   openDeleteConfirmation: (type: 'food' | 'entry', id: string, name: string) => void;
   closeDeleteConfirmation: () => void;
+
+  // Food details modal
+  isFoodDetailsModalOpen: boolean;
+  foodDetailsId: string | null;
+  openFoodDetailsModal: (foodId: string) => void;
+  closeFoodDetailsModal: () => void;
 }
 
 export const useUIStore = create<UIState>()(
@@ -167,6 +173,18 @@ export const useUIStore = create<UIState>()(
       }),
       closeDeleteConfirmation: () => set({
         deleteConfirmation: { isOpen: false, type: null, id: null, name: '' },
+      }),
+
+      // Food details modal
+      isFoodDetailsModalOpen: false,
+      foodDetailsId: null,
+      openFoodDetailsModal: (foodId) => set({
+        isFoodDetailsModalOpen: true,
+        foodDetailsId: foodId,
+      }),
+      closeFoodDetailsModal: () => set({
+        isFoodDetailsModalOpen: false,
+        foodDetailsId: null,
       }),
     }),
     {

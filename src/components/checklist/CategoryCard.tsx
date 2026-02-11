@@ -32,31 +32,36 @@ export function CategoryCard({ group }: CategoryCardProps) {
           </div>
         </div>
         <div className="flex items-center gap-3">
-          {/* Progress ring */}
-          <div className="relative w-10 h-10">
-            <svg className="w-10 h-10 transform -rotate-90">
+          {/* Progress pie chart */}
+          <div className="w-10 h-10">
+            <svg className="w-10 h-10" viewBox="0 0 40 40">
+              {/* Background circle */}
               <circle
                 cx="20"
                 cy="20"
                 r="16"
-                fill="none"
-                stroke="#e5e7eb"
-                strokeWidth="3"
+                fill="#e5e7eb"
               />
-              <circle
-                cx="20"
-                cy="20"
-                r="16"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="3"
-                strokeDasharray={`${(group.doneCount / group.totalCount) * 100.53} 100.53`}
-                className={colors.text}
-              />
+              {/* Filled pie wedge */}
+              {group.doneCount > 0 && (
+                <path
+                  d={(() => {
+                    const percentage = group.doneCount / group.totalCount;
+                    if (percentage >= 1) {
+                      // Full circle
+                      return 'M 20 20 m -16 0 a 16 16 0 1 0 32 0 a 16 16 0 1 0 -32 0';
+                    }
+                    const angle = percentage * 2 * Math.PI;
+                    const x = 20 + 16 * Math.sin(angle);
+                    const y = 20 - 16 * Math.cos(angle);
+                    const largeArc = percentage > 0.5 ? 1 : 0;
+                    return `M 20 20 L 20 4 A 16 16 0 ${largeArc} 1 ${x} ${y} Z`;
+                  })()}
+                  fill="currentColor"
+                  className={colors.text}
+                />
+              )}
             </svg>
-            <span className="absolute inset-0 flex items-center justify-center text-xs font-bold text-gray-700">
-              {Math.round((group.doneCount / group.totalCount) * 100)}%
-            </span>
           </div>
           {/* Expand/collapse icon */}
           <svg

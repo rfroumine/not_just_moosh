@@ -80,6 +80,7 @@ export interface FoodStatus {
   status: FoodStatusType;
   hasPlanned: boolean;
   needsReminder: boolean;
+  nextPlannedDate: string | null;
 }
 
 export interface ChecklistFood extends Food {

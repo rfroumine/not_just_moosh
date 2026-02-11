@@ -107,8 +107,12 @@ export function computeFoodStatus(
     status = timesGiven >= 1 ? 'done' : 'nothing';
   }
 
-  // Check if there are future planned entries
-  const hasPlanned = foodEntries.some((e) => isFutureDate(e.date));
+  // Check if there are future planned entries and find the next one
+  const futureEntries = foodEntries.filter((e) => isFutureDate(e.date));
+  const hasPlanned = futureEntries.length > 0;
+  const nextPlannedDate = futureEntries.length > 0
+    ? futureEntries.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())[0].date
+    : null;
 
   // Check if allergen needs reminder (>14 days since last given)
   const needsReminder =
@@ -123,6 +127,7 @@ export function computeFoodStatus(
     status,
     hasPlanned,
     needsReminder,
+    nextPlannedDate,
   };
 }
 

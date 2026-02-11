@@ -144,3 +144,53 @@ CREATE TRIGGER on_auth_user_created
 
 -- Migration: Add is_auto_complete column to manual_marks table (Feb 2026)
 -- ALTER TABLE manual_marks ADD COLUMN IF NOT EXISTS is_auto_complete BOOLEAN DEFAULT false;
+
+-- Migration: Add new default foods to existing users (Feb 2026)
+-- Run this to add new foods to all existing users
+-- INSERT INTO foods (user_id, name, category, is_allergen, is_default, emoji)
+-- SELECT p.id, new_food.name, new_food.category, new_food.is_allergen, true, new_food.emoji
+-- FROM profiles p
+-- CROSS JOIN (VALUES
+--   -- Vegetables
+--   ('Potato', 'vegetables', false, '🥔'),
+--   ('Corn', 'vegetables', false, '🌽'),
+--   ('Asparagus', 'vegetables', false, '🥬'),
+--   ('Butternut Squash', 'vegetables', false, '🎃'),
+--   ('Kale', 'vegetables', false, '🥬'),
+--   ('Eggplant', 'vegetables', false, '🍆'),
+--   ('Tomato', 'vegetables', false, '🍅'),
+--   ('Mushroom', 'vegetables', false, '🍄'),
+--   ('Celery', 'vegetables', false, '🥬'),
+--   ('Onion', 'vegetables', false, '🧅'),
+--   -- Fruits
+--   ('Orange', 'fruit', false, '🍊'),
+--   ('Pineapple', 'fruit', false, '🍍'),
+--   ('Cherries', 'fruit', false, '🍒'),
+--   ('Apricot', 'fruit', false, '🍑'),
+--   ('Nectarine', 'fruit', false, '🍑'),
+--   ('Blackberries', 'fruit', false, '🫐'),
+--   ('Prunes', 'fruit', false, '🫐'),
+--   ('Honeydew', 'fruit', false, '🍈'),
+--   ('Lemon', 'fruit', false, '🍋'),
+--   -- Dairy
+--   ('Greek Yogurt', 'dairy', false, '🥛'),
+--   ('Ricotta', 'dairy', false, '🧀'),
+--   -- Grains
+--   ('Rice', 'grains', false, '🍚'),
+--   ('Couscous', 'grains', false, '🌾'),
+--   ('Noodles', 'grains', false, '🍜'),
+--   -- Protein
+--   ('Tuna', 'protein', false, '🐟'),
+--   -- Other
+--   ('Cinnamon', 'other', false, '🫙'),
+--   ('Ginger', 'other', false, '🫚'),
+--   ('Chia Seeds', 'other', false, '🌱'),
+--   ('Flaxseed', 'other', false, '🌱'),
+--   ('Maple Syrup', 'other', false, '🍁')
+-- ) AS new_food(name, category, is_allergen, emoji)
+-- WHERE NOT EXISTS (
+--   SELECT 1 FROM foods f
+--   WHERE f.user_id = p.id
+--   AND LOWER(f.name) = LOWER(new_food.name)
+--   AND f.deleted_at IS NULL
+-- );

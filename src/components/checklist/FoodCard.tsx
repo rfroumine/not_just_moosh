@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import type { ChecklistFood } from '../../lib/types';
 import { CATEGORIES } from '../../lib/types';
 import { CATEGORY_COLORS, getFoodEmoji, ALLERGEN_DONE_THRESHOLD } from '../../lib/constants';
@@ -16,7 +15,7 @@ interface FoodCardProps {
 
 export function FoodCard({ food }: FoodCardProps) {
   const { user } = useAuth();
-  const { openEditFoodModal, showToast } = useUIStore();
+  const { openEditFoodModal, openFoodDetailsModal, showToast } = useUIStore();
   const addManualMark = useAddManualMark();
   const addMultipleManualMarks = useAddMultipleManualMarks();
   const removeManualMarks = useRemoveManualMarksForFood();
@@ -26,7 +25,6 @@ export function FoodCard({ food }: FoodCardProps) {
   const colors = CATEGORY_COLORS[food.category];
   const categoryInfo = CATEGORIES[food.category];
   const foodEmoji = food.emoji || getFoodEmoji(food.name, categoryInfo.icon);
-  const longPressTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const { timesGiven, lastGivenDate, hasPlanned, needsReminder } = food.foodStatus;
 
@@ -90,28 +88,12 @@ export function FoodCard({ food }: FoodCardProps) {
     }
   };
 
-  const handleLongPress = () => {
+  const handleCardClick = () => {
+    openFoodDetailsModal(food.id);
+  };
+
+  const handleEditClick = () => {
     openEditFoodModal(food.id);
-  };
-
-  // Long-press handlers for icon tooltips
-  const handleIconTouchStart = (message: string) => {
-    longPressTimerRef.current = setTimeout(() => {
-      showToast(message, 'info');
-    }, 500);
-  };
-
-  const handleIconTouchEnd = () => {
-    if (longPressTimerRef.current) {
-      clearTimeout(longPressTimerRef.current);
-      longPressTimerRef.current = null;
-    }
-  };
-
-  const handleIconContextMenu = (e: React.MouseEvent, message: string) => {
-    e.preventDefault();
-    e.stopPropagation();
-    showToast(message, 'info');
   };
 
   // Format times given with last date
@@ -130,7 +112,7 @@ export function FoodCard({ food }: FoodCardProps) {
     <div
       onContextMenu={(e) => {
         e.preventDefault();
-        handleLongPress();
+        handleCardClick();
       }}
       className={`flex items-center gap-3 p-2 bg-white rounded-lg border ${colors.border} hover:shadow-sm transition-shadow cursor-pointer active:bg-gray-50`}
     >
@@ -159,7 +141,7 @@ export function FoodCard({ food }: FoodCardProps) {
       </button>
 
       {/* Food info */}
-      <div className="flex-1 min-w-0" onClick={handleLongPress}>
+      <div className="flex-1 min-w-0" onClick={handleCardClick}>
         <div className="flex items-center gap-2">
           <span className="text-base">{foodEmoji}</span>
           <span className="font-medium text-gray-900 truncate">
@@ -186,26 +168,14 @@ export function FoodCard({ food }: FoodCardProps) {
       {/* Right side icons */}
       <div className="flex items-center gap-2 flex-shrink-0">
         {needsReminder && (
-          <span
-            className="text-amber-500"
-            title="Give again soon"
-            onTouchStart={() => handleIconTouchStart('Give this allergen again soon (14+ days since last)')}
-            onTouchEnd={handleIconTouchEnd}
-            onContextMenu={(e) => handleIconContextMenu(e, 'Give this allergen again soon (14+ days since last)')}
-          >
+          <span className="text-amber-500">
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </span>
         )}
         {hasPlanned && (
-          <span
-            className="text-blue-500"
-            title="Planned"
-            onTouchStart={() => handleIconTouchStart('This food has a future entry planned')}
-            onTouchEnd={handleIconTouchEnd}
-            onContextMenu={(e) => handleIconContextMenu(e, 'This food has a future entry planned')}
-          >
+          <span className="text-blue-500">
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
@@ -215,7 +185,7 @@ export function FoodCard({ food }: FoodCardProps) {
         <button
           onClick={(e) => {
             e.stopPropagation();
-            handleLongPress();
+            handleEditClick();
           }}
           className="text-gray-400 hover:text-gray-600 p-1 -mr-1"
           title="Edit food"

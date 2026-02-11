@@ -32,6 +32,16 @@ export const DEFAULT_FOODS: Array<{
   { name: 'Beets', category: 'vegetables', is_allergen: false, emoji: '🫐' },
   { name: 'Cucumber', category: 'vegetables', is_allergen: false, emoji: '🥒' },
   { name: 'Bell Pepper', category: 'vegetables', is_allergen: false, emoji: '🫑' },
+  { name: 'Potato', category: 'vegetables', is_allergen: false, emoji: '🥔' },
+  { name: 'Corn', category: 'vegetables', is_allergen: false, emoji: '🌽' },
+  { name: 'Asparagus', category: 'vegetables', is_allergen: false, emoji: '🥬' },
+  { name: 'Butternut Squash', category: 'vegetables', is_allergen: false, emoji: '🎃' },
+  { name: 'Kale', category: 'vegetables', is_allergen: false, emoji: '🥬' },
+  { name: 'Eggplant', category: 'vegetables', is_allergen: false, emoji: '🍆' },
+  { name: 'Tomato', category: 'vegetables', is_allergen: false, emoji: '🍅' },
+  { name: 'Mushroom', category: 'vegetables', is_allergen: false, emoji: '🍄' },
+  { name: 'Celery', category: 'vegetables', is_allergen: false, emoji: '🥬' },
+  { name: 'Onion', category: 'vegetables', is_allergen: false, emoji: '🧅' },
 
   // Fruits
   { name: 'Banana', category: 'fruit', is_allergen: false, emoji: '🍌' },
@@ -48,6 +58,15 @@ export const DEFAULT_FOODS: Array<{
   { name: 'Plum', category: 'fruit', is_allergen: false, emoji: '🫐' },
   { name: 'Grapes', category: 'fruit', is_allergen: false, emoji: '🍇' },
   { name: 'Kiwi', category: 'fruit', is_allergen: false, emoji: '🥝' },
+  { name: 'Orange', category: 'fruit', is_allergen: false, emoji: '🍊' },
+  { name: 'Pineapple', category: 'fruit', is_allergen: false, emoji: '🍍' },
+  { name: 'Cherries', category: 'fruit', is_allergen: false, emoji: '🍒' },
+  { name: 'Apricot', category: 'fruit', is_allergen: false, emoji: '🍑' },
+  { name: 'Nectarine', category: 'fruit', is_allergen: false, emoji: '🍑' },
+  { name: 'Blackberries', category: 'fruit', is_allergen: false, emoji: '🫐' },
+  { name: 'Prunes', category: 'fruit', is_allergen: false, emoji: '🫐' },
+  { name: 'Honeydew', category: 'fruit', is_allergen: false, emoji: '🍈' },
+  { name: 'Lemon', category: 'fruit', is_allergen: false, emoji: '🍋' },
 
   // Dairy
   { name: 'Yogurt', category: 'dairy', is_allergen: false, emoji: '🥛' },
@@ -55,6 +74,8 @@ export const DEFAULT_FOODS: Array<{
   { name: 'Cottage Cheese', category: 'dairy', is_allergen: false, emoji: '🧀' },
   { name: 'Butter', category: 'dairy', is_allergen: false, emoji: '🧈' },
   { name: 'Cream Cheese', category: 'dairy', is_allergen: false, emoji: '🧀' },
+  { name: 'Greek Yogurt', category: 'dairy', is_allergen: false, emoji: '🥛' },
+  { name: 'Ricotta', category: 'dairy', is_allergen: false, emoji: '🧀' },
 
   // Grains
   { name: 'Rice Cereal', category: 'grains', is_allergen: false, emoji: '🍚' },
@@ -65,6 +86,9 @@ export const DEFAULT_FOODS: Array<{
   { name: 'Bread', category: 'grains', is_allergen: false, emoji: '🍞' },
   { name: 'Crackers', category: 'grains', is_allergen: false, emoji: '🥠' },
   { name: 'Pancakes', category: 'grains', is_allergen: false, emoji: '🥞' },
+  { name: 'Rice', category: 'grains', is_allergen: false, emoji: '🍚' },
+  { name: 'Couscous', category: 'grains', is_allergen: false, emoji: '🌾' },
+  { name: 'Noodles', category: 'grains', is_allergen: false, emoji: '🍜' },
 
   // Protein
   { name: 'Chicken', category: 'protein', is_allergen: false, emoji: '🍗' },
@@ -79,12 +103,18 @@ export const DEFAULT_FOODS: Array<{
   { name: 'Lentils', category: 'protein', is_allergen: false, emoji: '🫘' },
   { name: 'Black Beans', category: 'protein', is_allergen: false, emoji: '🫘' },
   { name: 'Chickpeas', category: 'protein', is_allergen: false, emoji: '🧆' },
+  { name: 'Tuna', category: 'protein', is_allergen: false, emoji: '🐟' },
 
   // Other
   { name: 'Olive Oil', category: 'other', is_allergen: false, emoji: '🫒' },
   { name: 'Coconut', category: 'other', is_allergen: false, emoji: '🥥' },
   { name: 'Hummus', category: 'other', is_allergen: false, emoji: '🧆' },
   { name: 'Nut Butter', category: 'other', is_allergen: false, emoji: '🥜' },
+  { name: 'Cinnamon', category: 'other', is_allergen: false, emoji: '🫙' },
+  { name: 'Ginger', category: 'other', is_allergen: false, emoji: '🫚' },
+  { name: 'Chia Seeds', category: 'other', is_allergen: false, emoji: '🌱' },
+  { name: 'Flaxseed', category: 'other', is_allergen: false, emoji: '🌱' },
+  { name: 'Maple Syrup', category: 'other', is_allergen: false, emoji: '🍁' },
 ];
 
 // Tailwind color classes for categories

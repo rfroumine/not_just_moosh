@@ -9,16 +9,21 @@ import { AddEntryModal } from '../modals/AddEntryModal';
 import { AddFoodModal } from '../modals/AddFoodModal';
 import { EditFoodModal } from '../modals/EditFoodModal';
 import { EditEntryModal } from '../modals/EditEntryModal';
+import { FoodDetailsModal } from '../modals/FoodDetailsModal';
 import { ConfirmDelete } from '../modals/ConfirmDelete';
 import { VoiceInputButton } from '../voice/VoiceInputButton';
 import { VoiceConfirmModal } from '../voice/VoiceConfirmModal';
 import { Toast } from '../Toast';
+import { PWAInstallBanner } from '../PWAInstallBanner';
+import { PWAInstallModal } from '../modals/PWAInstallModal';
+import { usePWAInstall } from '../../hooks/usePWAInstall';
 
 export function AppShell() {
   const { profile, signOut } = useAuth();
-  const { currentView, setCurrentView, isAddEntryModalOpen, isAddFoodModalOpen, isEditFoodModalOpen, isEditEntryModalOpen, isVoiceConfirmModalOpen, deleteConfirmation } = useUIStore();
+  const { currentView, setCurrentView, isAddEntryModalOpen, isAddFoodModalOpen, isEditFoodModalOpen, isEditEntryModalOpen, isFoodDetailsModalOpen, isVoiceConfirmModalOpen, deleteConfirmation } = useUIStore();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const pwa = usePWAInstall();
 
   const babyInitial = profile?.baby_name?.charAt(0).toUpperCase() || '?';
 
@@ -136,6 +141,15 @@ export function AppShell() {
         </div>
       )}
 
+      {/* PWA Install Banner */}
+      {pwa.showBanner && (
+        <PWAInstallBanner
+          isIOS={pwa.isIOS}
+          onInstall={pwa.triggerInstall}
+          onDismiss={pwa.dismissBanner}
+        />
+      )}
+
       {/* Bottom navigation */}
       <BottomNav />
 
@@ -144,8 +158,16 @@ export function AppShell() {
       {isAddFoodModalOpen && <AddFoodModal />}
       {isEditFoodModalOpen && <EditFoodModal />}
       {isEditEntryModalOpen && <EditEntryModal />}
+      {isFoodDetailsModalOpen && <FoodDetailsModal />}
       {isVoiceConfirmModalOpen && <VoiceConfirmModal />}
       {deleteConfirmation.isOpen && <ConfirmDelete />}
+      {pwa.showModal && (
+        <PWAInstallModal
+          isIOS={pwa.isIOS}
+          onInstall={pwa.triggerInstall}
+          onDismiss={pwa.dismissModal}
+        />
+      )}
 
       {/* Toast notifications */}
       <Toast />
