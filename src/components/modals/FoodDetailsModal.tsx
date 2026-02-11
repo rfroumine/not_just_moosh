@@ -3,7 +3,7 @@ import { useChecklist } from '../../queries/useChecklist';
 import { CATEGORIES } from '../../lib/types';
 import type { ChecklistFood } from '../../lib/types';
 import { getFoodEmoji } from '../../lib/constants';
-import { formatLastGiven, daysSince } from '../../utils/deriveChecklist';
+import { formatLastGiven } from '../../utils/deriveChecklist';
 
 export function FoodDetailsModal() {
   const { foodDetailsId, closeFoodDetailsModal, openEditFoodModal } = useUIStore();
@@ -21,9 +21,6 @@ export function FoodDetailsModal() {
   const categoryInfo = CATEGORIES[food.category];
   const foodEmoji = food.emoji || getFoodEmoji(food.name, categoryInfo.icon);
   const { timesGiven, lastGivenDate, needsReminder, nextPlannedDate } = food.foodStatus;
-
-  // Calculate weeks since last given for reminder display
-  const weeksSinceGiven = lastGivenDate ? Math.floor(daysSince(lastGivenDate) / 7) : 0;
 
   // Format the next planned date
   const formatPlannedDate = (dateStr: string) => {
