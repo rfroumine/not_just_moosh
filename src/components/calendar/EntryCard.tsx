@@ -11,7 +11,7 @@ export function EntryCard({ entry }: EntryCardProps) {
   const { openDeleteConfirmation, openEditEntryModal } = useUIStore();
   const categoryInfo = CATEGORIES[entry.food.category as keyof typeof CATEGORIES];
   const colors = CATEGORY_COLORS[entry.food.category as keyof typeof CATEGORY_COLORS];
-  const foodEmoji = getFoodEmoji(entry.food.name, categoryInfo.icon);
+  const foodEmoji = entry.food.emoji || getFoodEmoji(entry.food.name, categoryInfo.icon);
 
   const handleEdit = (e: React.MouseEvent) => {
     e.stopPropagation();

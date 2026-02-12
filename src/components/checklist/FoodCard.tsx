@@ -61,8 +61,9 @@ export function FoodCard({ food }: FoodCardProps) {
     e.stopPropagation();
     if (!user?.id) return;
 
-    // Check if food has calendar entries
-    if (hasCalendarEntries) {
+    // For non-allergens, block untick if calendar entries exist
+    // (Allergens only remove auto-complete marks, so calendar entries are preserved)
+    if (!food.is_allergen && hasCalendarEntries) {
       const dates = foodCalendarEntries
         .map((e) => {
           const date = new Date(e.date);
@@ -76,7 +77,6 @@ export function FoodCard({ food }: FoodCardProps) {
     }
 
     try {
-      // For allergens, only remove auto-complete marks (restore previous state)
       if (food.is_allergen) {
         await removeAutoCompleteMarks.mutateAsync(food.id);
       } else {

@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useChecklist } from '../../queries/useChecklist';
 import { useUIStore } from '../../stores/uiStore';
 import { CategoryCard } from './CategoryCard';
+import { ContactFooter } from '../layout/ContactFooter';
 
 export function ChecklistView() {
   const { groups, isLoading, error } = useChecklist();
@@ -78,6 +79,8 @@ export function ChecklistView() {
       {groups.map((group) => (
         <CategoryCard key={group.category} group={group} />
       ))}
+
+      <ContactFooter />
 
       {/* Floating add button */}
       <button

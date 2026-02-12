@@ -60,15 +60,12 @@ export function AppShell() {
       {/* Header */}
       <header className="bg-white border-b border-gray-200 sticky top-0 z-40">
         <div className="max-w-lg mx-auto px-4 py-2 flex items-center justify-center">
-          <div className="flex items-center gap-2">
-            <span className="text-2xl">🥕</span>
-            <h1
-              className="text-3xl text-gray-900"
-              style={{ fontFamily: 'Pacifico, cursive' }}
-            >
-              Not just Moosh
-            </h1>
-          </div>
+          <h1
+            className="text-3xl text-gray-900"
+            style={{ fontFamily: 'Pacifico, cursive' }}
+          >
+            Not just Moosh
+          </h1>
 
           {/* Baby avatar with dropdown - positioned absolute to maintain centering */}
           <div className="absolute right-4" ref={dropdownRef}>

@@ -9,7 +9,7 @@ interface CategoryCardProps {
 }
 
 export function CategoryCard({ group }: CategoryCardProps) {
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
   const categoryInfo = CATEGORIES[group.category];
   const colors = CATEGORY_COLORS[group.category];
 

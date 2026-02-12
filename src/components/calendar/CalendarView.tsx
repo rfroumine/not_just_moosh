@@ -3,6 +3,7 @@ import { useCalendarEntriesWithFoods } from '../../queries/useCalendarEntries';
 import { useUIStore } from '../../stores/uiStore';
 import { MonthCalendar } from './MonthCalendar';
 import { DayEntries } from './DayEntries';
+import { ContactFooter } from '../layout/ContactFooter';
 
 export function CalendarView() {
   const [currentMonth, setCurrentMonth] = useState(() => new Date());
@@ -102,6 +103,8 @@ export function CalendarView() {
           <DayEntries date={selectedDate} />
         </div>
       )}
+
+      <ContactFooter />
     </div>
   );
 }
