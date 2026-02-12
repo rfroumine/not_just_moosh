@@ -23,12 +23,12 @@ const capitalizeName = (name: string): string => {
 
 export function AddFoodModal() {
   const { user } = useAuth();
-  const { closeAddFoodModal } = useUIStore();
+  const { closeAddFoodModal, addFoodPrefillName } = useUIStore();
   const { data: foods } = useFoods();
   const addFood = useAddFood();
   const queryClient = useQueryClient();
 
-  const [name, setName] = useState('');
+  const [name, setName] = useState(addFoodPrefillName || '');
   const [category, setCategory] = useState<Category>('vegetables');
   const [emoji, setEmoji] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);

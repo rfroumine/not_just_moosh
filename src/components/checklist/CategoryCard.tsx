@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { CategoryGroup } from '../../lib/types';
 import { CATEGORIES } from '../../lib/types';
 import { CATEGORY_COLORS } from '../../lib/constants';
@@ -6,10 +6,17 @@ import { FoodCard } from './FoodCard';
 
 interface CategoryCardProps {
   group: CategoryGroup;
+  forceExpanded?: boolean;
 }
 
-export function CategoryCard({ group }: CategoryCardProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
+export function CategoryCard({ group, forceExpanded }: CategoryCardProps) {
+  const [isExpanded, setIsExpanded] = useState(forceExpanded ?? false);
+
+  useEffect(() => {
+    if (forceExpanded) {
+      setIsExpanded(true);
+    }
+  }, [forceExpanded]);
   const categoryInfo = CATEGORIES[group.category];
   const colors = CATEGORY_COLORS[group.category];
 

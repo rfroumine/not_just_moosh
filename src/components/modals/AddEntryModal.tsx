@@ -281,7 +281,10 @@ export function AddEntryModal() {
                     <div className="mt-2 max-h-48 overflow-y-auto bg-gray-50 rounded-xl">
                       <button
                         type="button"
-                        onClick={() => setIsAddingNew(true)}
+                        onClick={() => {
+                          setIsAddingNew(true);
+                          setNewFoodName(searchQuery);
+                        }}
                         className="w-full flex items-center gap-2 px-4 py-2.5 text-indigo-600 hover:bg-indigo-50 rounded-t-xl transition-colors"
                       >
                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

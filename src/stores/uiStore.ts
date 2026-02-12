@@ -44,7 +44,8 @@ interface UIState {
   closeEditEntryModal: () => void;
 
   isAddFoodModalOpen: boolean;
-  openAddFoodModal: () => void;
+  addFoodPrefillName: string | null;
+  openAddFoodModal: (prefillName?: string) => void;
   closeAddFoodModal: () => void;
 
   // Voice confirm modal
@@ -73,6 +74,11 @@ interface UIState {
   foodDetailsId: string | null;
   openFoodDetailsModal: (foodId: string) => void;
   closeFoodDetailsModal: () => void;
+
+  // Checklist search
+  checklistSearchQuery: string;
+  setChecklistSearchQuery: (query: string) => void;
+  clearChecklistSearch: () => void;
 }
 
 export const useUIStore = create<UIState>()(
@@ -133,8 +139,15 @@ export const useUIStore = create<UIState>()(
 
       // Add food modal
       isAddFoodModalOpen: false,
-      openAddFoodModal: () => set({ isAddFoodModalOpen: true }),
-      closeAddFoodModal: () => set({ isAddFoodModalOpen: false }),
+      addFoodPrefillName: null,
+      openAddFoodModal: (prefillName) => set({
+        isAddFoodModalOpen: true,
+        addFoodPrefillName: prefillName || null,
+      }),
+      closeAddFoodModal: () => set({
+        isAddFoodModalOpen: false,
+        addFoodPrefillName: null,
+      }),
 
       // Voice confirm modal
       isVoiceConfirmModalOpen: false,
@@ -186,6 +199,11 @@ export const useUIStore = create<UIState>()(
         isFoodDetailsModalOpen: false,
         foodDetailsId: null,
       }),
+
+      // Checklist search
+      checklistSearchQuery: '',
+      setChecklistSearchQuery: (query) => set({ checklistSearchQuery: query }),
+      clearChecklistSearch: () => set({ checklistSearchQuery: '' }),
     }),
     {
       name: 'moosh-ui-state',

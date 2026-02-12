@@ -1,12 +1,19 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useMemo } from 'react';
 import { useChecklist } from '../../queries/useChecklist';
 import { useUIStore } from '../../stores/uiStore';
 import { CategoryCard } from './CategoryCard';
+import { ChecklistSearchBar } from './ChecklistSearchBar';
 import { ContactFooter } from '../layout/ContactFooter';
 
 export function ChecklistView() {
   const { groups, isLoading, error } = useChecklist();
-  const { checklistScrollPosition, setChecklistScrollPosition, openAddFoodModal } = useUIStore();
+  const {
+    checklistScrollPosition,
+    setChecklistScrollPosition,
+    openAddFoodModal,
+    checklistSearchQuery,
+    clearChecklistSearch
+  } = useUIStore();
   const scrollRef = useRef<HTMLDivElement>(null);
 
   // Restore scroll position
@@ -28,6 +35,31 @@ export function ChecklistView() {
     element.addEventListener('scroll', handleScroll, { passive: true });
     return () => element.removeEventListener('scroll', handleScroll);
   }, [setChecklistScrollPosition]);
+
+  // Clear search on unmount (view switch)
+  useEffect(() => {
+    return () => {
+      clearChecklistSearch();
+    };
+  }, [clearChecklistSearch]);
+
+  // Filter groups based on search query
+  const filteredGroups = useMemo(() => {
+    if (!checklistSearchQuery.trim()) {
+      return groups;
+    }
+    const query = checklistSearchQuery.toLowerCase();
+    return groups
+      .map((group) => ({
+        ...group,
+        foods: group.foods.filter((food) =>
+          food.name.toLowerCase().includes(query)
+        ),
+      }))
+      .filter((group) => group.foods.length > 0);
+  }, [groups, checklistSearchQuery]);
+
+  const isSearchActive = checklistSearchQuery.trim().length > 0;
 
   if (error) {
     return (
@@ -75,16 +107,38 @@ export function ChecklistView() {
   }
 
   return (
-    <div ref={scrollRef} className="space-y-4 pb-20">
-      {groups.map((group) => (
-        <CategoryCard key={group.category} group={group} />
-      ))}
+    <div ref={scrollRef} className="pb-20">
+      <ChecklistSearchBar />
 
-      <ContactFooter />
+      {filteredGroups.length === 0 && isSearchActive ? (
+        <div className="text-center py-12">
+          <p className="text-gray-500 mb-4">
+            No foods match "{checklistSearchQuery}"
+          </p>
+          <button
+            onClick={() => openAddFoodModal(checklistSearchQuery)}
+            className="px-4 py-2.5 bg-indigo-600 text-white font-medium rounded-xl hover:bg-indigo-700 transition-colors"
+          >
+            Add "{checklistSearchQuery}" to your list
+          </button>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {filteredGroups.map((group) => (
+            <CategoryCard
+              key={group.category}
+              group={group}
+              forceExpanded={isSearchActive}
+            />
+          ))}
+
+          <ContactFooter />
+        </div>
+      )}
 
       {/* Floating add button */}
       <button
-        onClick={openAddFoodModal}
+        onClick={() => openAddFoodModal()}
         className="fixed bottom-20 right-6 w-14 h-14 bg-indigo-600 text-white rounded-full shadow-lg hover:bg-indigo-700 active:scale-95 transition-all flex items-center justify-center z-30"
         aria-label="Add food"
       >
