@@ -190,7 +190,6 @@ export const useUIStore = create<UIState>()(
     {
       name: 'moosh-ui-state',
       partialize: (state) => ({
-        currentView: state.currentView,
         checklistScrollPosition: state.checklistScrollPosition,
         calendarScrollPosition: state.calendarScrollPosition,
       }),
