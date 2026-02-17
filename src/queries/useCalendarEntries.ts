@@ -115,7 +115,7 @@ export function useUpdateCalendarEntry() {
       updates,
     }: {
       entryId: string;
-      updates: { date?: string; texture?: Texture; notes?: string | null; reaction?: string | null };
+      updates: { food_id?: string; date?: string; texture?: Texture; notes?: string | null; reaction?: string | null };
     }) => {
       const { data, error } = await supabase
         .from('calendar_entries')
